@@ -1,0 +1,43 @@
+{
+  "name": "anashi-gendiff",
+  "version": "1.0.0",
+  "description": "Util for finding differences in configuration files",
+  "keywords": [
+    "diff",
+    "differences",
+    "gendiff"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamilla11/project-lvl2-s439.git"
+  },
+  "author": "anashi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mamilla11/project-lvl2-s439/issues"
+  },
+  "homepage": "https://github.com/mamilla11/project-lvl2-s439#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build"
+  },
+  "bin": {},
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "hexlet-pairs": "^1.0.8",
+    "readline-sync": "^1.4.9"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  }
+}
