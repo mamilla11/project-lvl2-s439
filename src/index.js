@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 const genDiff = (before, after) => {
   const beforeObj = JSON.parse(fs.readFileSync(before, 'utf8'));
@@ -7,8 +8,8 @@ const genDiff = (before, after) => {
   const keys = new Set(Object.keys(beforeObj).concat(Object.keys(afterObj)));
 
   return Array.from(keys).reduce((acc, key) => {
-    const beforeHas = key in beforeObj;
-    const afterHas = key in afterObj;
+    const beforeHas = _.has(beforeObj, key);
+    const afterHas = _.has(afterObj, key);
     if (beforeHas && !afterHas) {
       return `${acc}- ${key}: ${beforeObj[key]}\n`;
     }

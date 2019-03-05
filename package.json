@@ -34,7 +34,8 @@
     "dist"
   ],
   "dependencies": {
-    "commander": "^2.19.0"
+    "commander": "^2.19.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
