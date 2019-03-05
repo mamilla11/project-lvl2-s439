@@ -6,11 +6,11 @@ import genDiff from '..';
 
 program
   .version(version)
-  .arguments('<firstConfig> <secondConfig>')
+  .arguments('<oldConfigFile> <newConfigFile>')
   .description('Compares two configuration files and shows a difference.')
   .option('-f, --format [type]', 'Output format')
-  .action((firstConfig, secondConfig) => (
-    console.log(genDiff(firstConfig, secondConfig))
+  .action((oldConfigFile, newConfigFile) => (
+    console.log(genDiff(oldConfigFile, newConfigFile))
   ))
   .parse(process.argv);
 

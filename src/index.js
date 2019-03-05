@@ -1,26 +1,28 @@
 import fs from 'fs';
 import _ from 'lodash';
 
-const genDiff = (before, after) => {
-  const beforeObj = JSON.parse(fs.readFileSync(before, 'utf8'));
-  const afterObj = JSON.parse(fs.readFileSync(after, 'utf8'));
+const processConfigKey = (key, oldConfig, newConfig) => {
+  const oldHasKey = _.has(oldConfig, key);
+  const newHasKey = _.has(newConfig, key);
+  if (oldHasKey && !newHasKey) {
+    return `- ${key}: ${oldConfig[key]}`;
+  }
+  if (!oldHasKey && newHasKey) {
+    return `+ ${key}: ${newConfig[key]}`;
+  }
+  if (newConfig[key] === oldConfig[key]) {
+    return `  ${key}: ${newConfig[key]}`;
+  }
+  return `+ ${key}: ${newConfig[key]}\n- ${key}: ${oldConfig[key]}`;
+};
 
-  const keys = new Set(Object.keys(beforeObj).concat(Object.keys(afterObj)));
+const genDiff = (oldConfigFile, newConfigFile) => {
+  const oldConfig = JSON.parse(fs.readFileSync(oldConfigFile, 'utf8'));
+  const newConfig = JSON.parse(fs.readFileSync(newConfigFile, 'utf8'));
 
-  return Array.from(keys).reduce((acc, key) => {
-    const beforeHas = _.has(beforeObj, key);
-    const afterHas = _.has(afterObj, key);
-    if (beforeHas && !afterHas) {
-      return `${acc}- ${key}: ${beforeObj[key]}\n`;
-    }
-    if (!beforeHas && afterHas) {
-      return `${acc}+ ${key}: ${afterObj[key]}\n`;
-    }
-    if (afterObj[key] === beforeObj[key]) {
-      return `${acc}  ${key}: ${afterObj[key]}\n`;
-    }
-    return `${acc}+ ${key}: ${afterObj[key]}\n- ${key}: ${beforeObj[key]}\n`;
-  }, '');
+  const keys = _.union(_.keys(oldConfig), _.keys(newConfig));
+
+  return keys.map(key => processConfigKey(key, oldConfig, newConfig)).join('\n');
 };
 
 export default genDiff;

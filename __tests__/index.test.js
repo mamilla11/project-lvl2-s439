@@ -6,5 +6,7 @@ const afterJSON = '__tests__/__fixtures__/after.json';
 const result = '__tests__/__fixtures__/result.txt';
 
 test('diff flat json files', () => {
-  expect(genDiff(beforeJSON, afterJSON)).toEqual(fs.readFileSync(result, 'utf8'));
+  const received = genDiff(beforeJSON, afterJSON);
+  const expected = fs.readFileSync(result, 'utf8');
+  expect(received).toEqual(expected);
 });
