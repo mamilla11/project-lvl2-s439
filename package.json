@@ -30,9 +30,7 @@
     "dist"
   ],
   "dependencies": {
-    "commander": "^2.19.0",
-    "hexlet-pairs": "^1.0.8",
-    "readline-sync": "^1.4.9"
+    "commander": "^2.19.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
