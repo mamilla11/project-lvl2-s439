@@ -1,5 +1,7 @@
 import fs from 'fs';
+import path from 'path';
 import _ from 'lodash';
+import parse from './parsers';
 
 const processConfigKey = (key, oldConfig, newConfig) => {
   const oldHasKey = _.has(oldConfig, key);
@@ -17,8 +19,18 @@ const processConfigKey = (key, oldConfig, newConfig) => {
 };
 
 const genDiff = (oldConfigFilePath, newConfigFilePath) => {
-  const oldConfig = JSON.parse(fs.readFileSync(oldConfigFilePath, 'utf8'));
-  const newConfig = JSON.parse(fs.readFileSync(newConfigFilePath, 'utf8'));
+  const filePaths = [oldConfigFilePath, newConfigFilePath];
+
+  const [oldFileExt, newFileExt] = filePaths.map(
+    filePath => path.extname(filePath),
+  );
+
+  const [oldFileContent, newFileContent] = filePaths.map(
+    filePath => fs.readFileSync(filePath, 'utf8'),
+  );
+
+  const oldConfig = parse(oldFileExt, oldFileContent);
+  const newConfig = parse(newFileExt, newFileContent);
 
   const keys = _.union(_.keys(oldConfig), _.keys(newConfig));
 
