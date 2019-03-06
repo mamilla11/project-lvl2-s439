@@ -8,6 +8,9 @@ describe('GenDiff', () => {
   const oldConfigFilePathYAML = '__tests__/__fixtures__/before.yaml';
   const newConfigFilePathYAML = '__tests__/__fixtures__/after.yaml';
 
+  const oldConfigFilePathINI = '__tests__/__fixtures__/before.yaml';
+  const newConfigFilePathINI = '__tests__/__fixtures__/after.yaml';
+
   const correctDiffFilePath = '__tests__/__fixtures__/result.txt';
 
   const expected = fs.readFileSync(correctDiffFilePath, 'utf8');
@@ -19,6 +22,11 @@ describe('GenDiff', () => {
 
   it('flat yaml files', () => {
     const received = genDiff(oldConfigFilePathYAML, newConfigFilePathYAML);
+    expect(received).toEqual(expected);
+  });
+
+  it('flat ini files', () => {
+    const received = genDiff(oldConfigFilePathINI, newConfigFilePathINI);
     expect(received).toEqual(expected);
   });
 });
