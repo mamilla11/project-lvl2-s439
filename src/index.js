@@ -16,9 +16,9 @@ const processConfigKey = (key, oldConfig, newConfig) => {
   return `+ ${key}: ${newConfig[key]}\n- ${key}: ${oldConfig[key]}`;
 };
 
-const genDiff = (oldConfigFile, newConfigFile) => {
-  const oldConfig = JSON.parse(fs.readFileSync(oldConfigFile, 'utf8'));
-  const newConfig = JSON.parse(fs.readFileSync(newConfigFile, 'utf8'));
+const genDiff = (oldConfigFilePath, newConfigFilePath) => {
+  const oldConfig = JSON.parse(fs.readFileSync(oldConfigFilePath, 'utf8'));
+  const newConfig = JSON.parse(fs.readFileSync(newConfigFilePath, 'utf8'));
 
   const keys = _.union(_.keys(oldConfig), _.keys(newConfig));
 

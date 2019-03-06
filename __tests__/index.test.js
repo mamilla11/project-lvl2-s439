@@ -1,12 +1,24 @@
 import fs from 'fs';
 import genDiff from '../src';
 
-const oldConfigFilePathJSON = '__tests__/__fixtures__/before.json';
-const newConfigFilePathJSON = '__tests__/__fixtures__/after.json';
-const correctDiffFilePath = '__tests__/__fixtures__/result.txt';
+describe('GenDiff', () => {
+  const oldConfigFilePathJSON = '__tests__/__fixtures__/before.json';
+  const newConfigFilePathJSON = '__tests__/__fixtures__/after.json';
 
-test('diff flat json files', () => {
-  const received = genDiff(oldConfigFilePathJSON, newConfigFilePathJSON);
+  const oldConfigFilePathYAML = '__tests__/__fixtures__/before.yaml';
+  const newConfigFilePathYAML = '__tests__/__fixtures__/after.yaml';
+
+  const correctDiffFilePath = '__tests__/__fixtures__/result.txt';
+
   const expected = fs.readFileSync(correctDiffFilePath, 'utf8');
-  expect(received).toEqual(expected);
+
+  it('flat json files', () => {
+    const received = genDiff(oldConfigFilePathJSON, newConfigFilePathJSON);
+    expect(received).toEqual(expected);
+  });
+
+  it('flat yaml files', () => {
+    const received = genDiff(oldConfigFilePathYAML, newConfigFilePathYAML);
+    expect(received).toEqual(expected);
+  });
 });
