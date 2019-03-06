@@ -7,3 +7,6 @@
 
 ### compare two .yaml config files
 [![asciicast](https://asciinema.org/a/S0HvewQd09QMDRYZZNCuVhHDV.svg)](https://asciinema.org/a/S0HvewQd09QMDRYZZNCuVhHDV)
+
+### compare two .ini config files
+[![asciicast](https://asciinema.org/a/tSKAmcXxgLot9WcPsKrGCMG27.svg)](https://asciinema.org/a/tSKAmcXxgLot9WcPsKrGCMG27)
