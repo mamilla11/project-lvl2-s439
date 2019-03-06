@@ -8,8 +8,8 @@ describe('GenDiff', () => {
   const oldConfigFilePathYAML = '__tests__/__fixtures__/before.yaml';
   const newConfigFilePathYAML = '__tests__/__fixtures__/after.yaml';
 
-  const oldConfigFilePathINI = '__tests__/__fixtures__/before.yaml';
-  const newConfigFilePathINI = '__tests__/__fixtures__/after.yaml';
+  const oldConfigFilePathINI = '__tests__/__fixtures__/before.ini';
+  const newConfigFilePathINI = '__tests__/__fixtures__/after.ini';
 
   const correctDiffFilePath = '__tests__/__fixtures__/result.txt';
 
