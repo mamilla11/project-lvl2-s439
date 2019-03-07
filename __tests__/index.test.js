@@ -16,7 +16,7 @@ const flatConfigFilesTestPaths = [
     '__tests__/__fixtures__/beforeFlat.ini',
     '__tests__/__fixtures__/afterFlat.ini',
     '__tests__/__fixtures__/resultFlat.txt',
-  ]
+  ],
 ];
 
 const nestedConfigFilesTestPaths = [
@@ -34,7 +34,7 @@ const nestedConfigFilesTestPaths = [
     '__tests__/__fixtures__/beforeNested.ini',
     '__tests__/__fixtures__/afterNested.ini',
     '__tests__/__fixtures__/resultNested.txt',
-  ]
+  ],
 ];
 
 const executeTests = (testData) => {
