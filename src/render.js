@@ -41,15 +41,15 @@ const renderDefault = diff => (
   }, []).join('\n')
 );
 
-const renderPlain = (diff) => {
+// const renderPlain = (diff) => {
+// };
 
-};
-
-export default (diff, outputFormat) => {
-  switch(outputFormat) {
-    case 'plain':
-      return renderPlain(diff);
-    default:
-      return renderDefault(diff);
-  }
-};
+// export default (diff, outputFormat) => {
+//   switch(outputFormat) {
+//     case 'plain':
+//       return renderPlain(diff);
+//     default:
+//       return renderDefault(diff);
+//   }
+// };
+export default (diff, outputFormat) => (outputFormat ? '' : renderDefault(diff));
