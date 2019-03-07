@@ -14,38 +14,42 @@ const renderValue = (value, level) => {
   return ['{', ...entries, `${tab(level)}  }`].join('\n');
 };
 
-const render = diff => (
+const renderDefault = diff => (
   diff.reduce((acc, entry) => {
-    const {
-      name,
-      oldValue,
-      newValue,
-      status,
-      children,
-      level,
-    } = entry;
+    const { ...e } = entry;
 
-    const tabs = tab(level);
+    const tabs = tab(e.level);
 
-    switch (status) {
+    switch (e.status) {
       case entryStatus.ADDED:
-        return [...acc, `${tabs}+ ${name}: ${renderValue(newValue, level)}`];
+        return [...acc, `${tabs}+ ${e.name}: ${renderValue(e.newValue, e.level)}`];
       case entryStatus.DELETED:
-        return [...acc, `${tabs}- ${name}: ${renderValue(oldValue, level)}`];
+        return [...acc, `${tabs}- ${e.name}: ${renderValue(e.oldValue, e.level)}`];
       case entryStatus.UNCHANGED:
-        return [...acc, `${tabs}  ${name}: ${renderValue(newValue, level)}`];
+        return [...acc, `${tabs}  ${e.name}: ${renderValue(e.newValue, e.level)}`];
       case entryStatus.CHANGED:
         return [
           ...acc,
-          `${tabs}+ ${name}: ${renderValue(newValue, level)}`,
-          `${tabs}- ${name}: ${renderValue(oldValue, level)}`,
+          `${tabs}+ ${e.name}: ${renderValue(e.newValue, e.level)}`,
+          `${tabs}- ${e.name}: ${renderValue(e.oldValue, e.level)}`,
         ];
       case entryStatus.NESTED:
-        return [...acc, `${tabs}  ${name}: {`, `${render(children)}`, `${tabs}  }`];
+        return [...acc, `${tabs}  ${e.name}: {`, `${renderDefault(e.children)}`, `${tabs}  }`];
       default:
         return acc;
     }
   }, []).join('\n')
 );
 
-export default render;
+const renderPlain = (diff) => {
+
+};
+
+export default (diff, outputFormat) => {
+  switch(outputFormat) {
+    case 'plain':
+      return renderPlain(diff);
+    default:
+      return renderDefault(diff);
+  }
+};

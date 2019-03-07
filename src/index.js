@@ -4,7 +4,7 @@ import parse from './parser';
 import differ from './differ';
 import render from './render';
 
-const genDiff = (oldConfigFilePath, newConfigFilePath) => {
+const genDiff = (oldConfigFilePath, newConfigFilePath, outputFormat) => {
   const filePaths = [oldConfigFilePath, newConfigFilePath];
 
   const [oldFileExt, newFileExt] = filePaths.map(
@@ -18,7 +18,8 @@ const genDiff = (oldConfigFilePath, newConfigFilePath) => {
   const oldConfig = parse(oldFileExt, oldFileContent);
   const newConfig = parse(newFileExt, newFileContent);
 
-  return render(differ(oldConfig, newConfig));
+  const diff = differ(oldConfig, newConfig);
+  return render(diff, outputFormat);
 };
 
 export default genDiff;
