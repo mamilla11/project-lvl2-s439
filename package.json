@@ -1,6 +1,6 @@
 {
   "name": "anashi-gendiff-cli",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Util for finding differences in configuration files",
   "keywords": [
     "diff",
