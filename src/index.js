@@ -1,22 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import _ from 'lodash';
-import parse from './parsers';
-
-const processConfigKey = (key, oldConfig, newConfig) => {
-  const oldHasKey = _.has(oldConfig, key);
-  const newHasKey = _.has(newConfig, key);
-  if (oldHasKey && !newHasKey) {
-    return `- ${key}: ${oldConfig[key]}`;
-  }
-  if (!oldHasKey && newHasKey) {
-    return `+ ${key}: ${newConfig[key]}`;
-  }
-  if (newConfig[key] === oldConfig[key]) {
-    return `  ${key}: ${newConfig[key]}`;
-  }
-  return `+ ${key}: ${newConfig[key]}\n- ${key}: ${oldConfig[key]}`;
-};
+import parse from './parser';
+import differ from './differ';
+import render from './render';
 
 const genDiff = (oldConfigFilePath, newConfigFilePath) => {
   const filePaths = [oldConfigFilePath, newConfigFilePath];
@@ -32,9 +18,7 @@ const genDiff = (oldConfigFilePath, newConfigFilePath) => {
   const oldConfig = parse(oldFileExt, oldFileContent);
   const newConfig = parse(newFileExt, newFileContent);
 
-  const keys = _.union(_.keys(oldConfig), _.keys(newConfig));
-
-  return keys.map(key => processConfigKey(key, oldConfig, newConfig)).join('\n');
+  return render(differ(oldConfig, newConfig));
 };
 
 export default genDiff;
