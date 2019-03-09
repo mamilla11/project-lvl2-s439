@@ -18,26 +18,28 @@ const renderDefault = (diff, level = 0) => (
 
     const tabs = tab(level);
 
-    switch (e.type) {
-      case 'added':
-        return `${tabs}+ ${e.name}: ${renderValue(e.newValue, level)}`;
-      case 'deleted':
-        return `${tabs}- ${e.name}: ${renderValue(e.oldValue, level)}`;
-      case 'unchanged':
-        return `${tabs}  ${e.name}: ${renderValue(e.newValue, level)}`;
-      case 'changed':
-        return [
-          `${tabs}+ ${e.name}: ${renderValue(e.newValue, level)}`,
-          `${tabs}- ${e.name}: ${renderValue(e.oldValue, level)}`,
-        ].join('\n');
-      case 'nested':
-        return [
-          `${tabs}  ${e.name}: {`, 
-          `${renderDefault(e.children, level + 1).join('\n')}`, 
-          `${tabs}  }`].join('\n');
-      default:
-        return acc;
+    if (e.type === 'added') {
+      return `${tabs}+ ${e.name}: ${renderValue(e.newValue, level)}`;
     }
+    if (e.type === 'deleted') {
+      return `${tabs}- ${e.name}: ${renderValue(e.oldValue, level)}`;
+    }
+    if (e.type === 'unchanged') {
+      return `${tabs}  ${e.name}: ${renderValue(e.newValue, level)}`;
+    }
+    if (e.type === 'changed') {
+      return [
+        `${tabs}+ ${e.name}: ${renderValue(e.newValue, level)}`,
+        `${tabs}- ${e.name}: ${renderValue(e.oldValue, level)}`,
+      ].join('\n');
+    }
+    if (e.type === 'nested') {
+      return [
+        `${tabs}  ${e.name}: {`,
+        `${renderDefault(e.children, level + 1).join('\n')}`,
+        `${tabs}  }`].join('\n');
+    }
+    return '';
   })
 );
 

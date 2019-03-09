@@ -9,8 +9,6 @@ export default (diff, outputFormat) => {
     case 'json':
       return renderJson(diff);
     default:
-      const test = renderDefault(diff);
-      console.log(test);
-      return test;
+      return renderDefault(diff);
   }
 };
