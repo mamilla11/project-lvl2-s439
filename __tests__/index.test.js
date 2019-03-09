@@ -1,7 +1,7 @@
 import fs from 'fs';
 import genDiff from '../src';
 
-const flatConfigFilesTestPaths = [
+const testFlatConfigFilesData = [
   [
     '__tests__/__fixtures__/beforeFlat.json',
     '__tests__/__fixtures__/afterFlat.json',
@@ -19,7 +19,7 @@ const flatConfigFilesTestPaths = [
   ],
 ];
 
-const nestedConfigFilesTestPaths = [
+const testNestedConfigFilesData = [
   [
     '__tests__/__fixtures__/beforeNested.json',
     '__tests__/__fixtures__/afterNested.json',
@@ -37,21 +37,38 @@ const nestedConfigFilesTestPaths = [
   ],
 ];
 
-const executeTests = (testData) => {
+const testPlainOutputData = [
+  [
+    '__tests__/__fixtures__/beforeFlat.json',
+    '__tests__/__fixtures__/afterFlat.json',
+    '__tests__/__fixtures__/resultFlatPlain.txt',
+  ],
+  [
+    '__tests__/__fixtures__/beforeNested.json',
+    '__tests__/__fixtures__/afterNested.json',
+    '__tests__/__fixtures__/resultNestedPlain.txt',
+  ],
+];
+
+const executeTests = (testData, outputFormat) => {
   it.each(testData)(
     '.genDiff(%s, %s)',
     (oldFilePath, newFilePath, correctFilePath) => {
       const expected = fs.readFileSync(correctFilePath, 'utf8');
-      const received = genDiff(oldFilePath, newFilePath);
+      const received = genDiff(oldFilePath, newFilePath, outputFormat);
       expect(received).toEqual(expected);
     },
   );
 };
 
-describe('GenDiff Flat', () => {
-  executeTests(flatConfigFilesTestPaths);
+describe('GenDiff Flat Config Files', () => {
+  executeTests(testFlatConfigFilesData, '');
 });
 
-describe('GenDiff Nested', () => {
-  executeTests(nestedConfigFilesTestPaths);
+describe('GenDiff Nested Config Files', () => {
+  executeTests(testNestedConfigFilesData, '');
+});
+
+describe('GenDiff Plain Output', () => {
+  executeTests(testPlainOutputData, 'plain');
 });

@@ -39,15 +39,4 @@ const renderDefault = (diff, level) => (
   }, []).join('\n')
 );
 
-// const renderPlain = (diff) => {
-// };
-
-// export default (diff, outputFormat) => {
-//   switch(outputFormat) {
-//     case 'plain':
-//       return renderPlain(diff);
-//     default:
-//       return renderDefault(diff);
-//   }
-// };
-export default (diff, outputFormat) => (outputFormat ? '' : renderDefault(diff, 0));
+export default diff => renderDefault(diff, 0);

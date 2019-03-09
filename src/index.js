@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import parse from './parser';
 import differ from './differ';
-import render from './render';
+import render from './renderers/renderer';
 
 const genDiff = (oldConfigFilePath, newConfigFilePath, outputFormat) => {
   const filePaths = [oldConfigFilePath, newConfigFilePath];
