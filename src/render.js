@@ -1,5 +1,3 @@
-import entryStatus from './status';
-
 const tab = num => '  '.repeat(num * 2);
 
 const renderValue = (value, level) => {
@@ -14,27 +12,27 @@ const renderValue = (value, level) => {
   return ['{', ...entries, `${tab(level)}  }`].join('\n');
 };
 
-const renderDefault = diff => (
+const renderDefault = (diff, level) => (
   diff.reduce((acc, entry) => {
     const { ...e } = entry;
 
-    const tabs = tab(e.level);
+    const tabs = tab(level);
 
-    switch (e.status) {
-      case entryStatus.ADDED:
-        return [...acc, `${tabs}+ ${e.name}: ${renderValue(e.newValue, e.level)}`];
-      case entryStatus.DELETED:
-        return [...acc, `${tabs}- ${e.name}: ${renderValue(e.oldValue, e.level)}`];
-      case entryStatus.UNCHANGED:
-        return [...acc, `${tabs}  ${e.name}: ${renderValue(e.newValue, e.level)}`];
-      case entryStatus.CHANGED:
+    switch (e.type) {
+      case 'added':
+        return [...acc, `${tabs}+ ${e.name}: ${renderValue(e.newValue, level)}`];
+      case 'deleted':
+        return [...acc, `${tabs}- ${e.name}: ${renderValue(e.oldValue, level)}`];
+      case 'unchanged':
+        return [...acc, `${tabs}  ${e.name}: ${renderValue(e.newValue, level)}`];
+      case 'changed':
         return [
           ...acc,
-          `${tabs}+ ${e.name}: ${renderValue(e.newValue, e.level)}`,
-          `${tabs}- ${e.name}: ${renderValue(e.oldValue, e.level)}`,
+          `${tabs}+ ${e.name}: ${renderValue(e.newValue, level)}`,
+          `${tabs}- ${e.name}: ${renderValue(e.oldValue, level)}`,
         ];
-      case entryStatus.NESTED:
-        return [...acc, `${tabs}  ${e.name}: {`, `${renderDefault(e.children)}`, `${tabs}  }`];
+      case 'nested':
+        return [...acc, `${tabs}  ${e.name}: {`, `${renderDefault(e.children, level + 1)}`, `${tabs}  }`];
       default:
         return acc;
     }
@@ -52,4 +50,4 @@ const renderDefault = diff => (
 //       return renderDefault(diff);
 //   }
 // };
-export default (diff, outputFormat) => (outputFormat ? '' : renderDefault(diff));
+export default (diff, outputFormat) => (outputFormat ? '' : renderDefault(diff, 0));

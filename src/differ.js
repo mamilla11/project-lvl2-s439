@@ -1,51 +1,55 @@
 import _ from 'lodash';
-import entryStatus from './status';
 
-const getConfigEntryStatus = (key, oldConfig, newConfig) => {
-  const oldHasKey = _.has(oldConfig, key);
-  const newHasKey = _.has(newConfig, key);
+const propertyActions = [
+  {
+    type: 'added',
+    check: (oldObj, newObj, key) => (
+      !_.has(oldObj, key) && _.has(newObj, key)
+    ),
+    process: (oldValue, newValue) => ({ oldValue, newValue }),
+  },
+  {
+    type: 'deleted',
+    check: (oldObj, newObj, key) => (
+      _.has(oldObj, key) && !_.has(newObj, key)
+    ),
+    process: (oldValue, newValue) => ({ oldValue, newValue }),
+  },
+  {
+    type: 'nested',
+    check: (oldObj, newObj, key) => (
+      _.isObject(oldObj[key]) && _.isObject(newObj[key])
+    ),
+    process: (oldValue, newValue, fn) => ({ children: fn(oldValue, newValue) }),
+  },
+  {
+    type: 'changed',
+    check: (oldObj, newObj, key) => (
+      oldObj[key] !== newObj[key]
+    ),
+    process: (oldValue, newValue) => ({ oldValue, newValue }),
+  },
+  {
+    type: 'unchanged',
+    check: (oldObj, newObj, key) => (
+      oldObj[key] === newObj[key]
+    ),
+    process: (oldValue, newValue) => ({ oldValue, newValue }),
+  },
+];
 
-  if (oldHasKey && !newHasKey) {
-    return entryStatus.DELETED;
-  }
-  if (!oldHasKey && newHasKey) {
-    return entryStatus.ADDED;
-  }
+const getPropertyAction = (oldObj, newObj, key) => (
+  propertyActions.find(({ check }) => check(oldObj, newObj, key))
+);
 
-  const oldConfigEntryNested = oldConfig[key] instanceof Object;
-  const newConfigEntryNested = newConfig[key] instanceof Object;
-
-  if (oldConfigEntryNested && newConfigEntryNested) {
-    return entryStatus.NESTED;
-  }
-  if (oldConfig[key] !== newConfig[key]) {
-    return entryStatus.CHANGED;
-  }
-  return entryStatus.UNCHANGED;
-};
-
-const differ = (oldConfig, newConfig, level = 0) => {
+const differ = (oldConfig, newConfig) => {
   const keys = _.union(_.keys(oldConfig), _.keys(newConfig));
 
-  return keys.reduce((acc, key) => {
-    const configEntry = {
-      name: key,
-      oldValue: null,
-      newValue: null,
-      status: getConfigEntryStatus(key, oldConfig, newConfig),
-      children: null,
-      level,
-    };
-
-    if (configEntry.status === entryStatus.NESTED) {
-      configEntry.children = differ(oldConfig[key], newConfig[key], level + 1);
-    } else {
-      configEntry.oldValue = oldConfig[key];
-      configEntry.newValue = newConfig[key];
-    }
-
-    return [...acc, configEntry];
-  }, []);
+  return keys.map((key) => {
+    const { type, process } = getPropertyAction(oldConfig, newConfig, key);
+    const rest = process(oldConfig[key], newConfig[key], differ);
+    return { name: key, type, ...rest };
+  });
 };
 
 export default differ;
