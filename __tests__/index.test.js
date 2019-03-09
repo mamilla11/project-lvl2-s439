@@ -50,6 +50,19 @@ const testPlainOutputData = [
   ],
 ];
 
+const testJsonOutputData = [
+  [
+    '__tests__/__fixtures__/beforeFlat.json',
+    '__tests__/__fixtures__/afterFlat.json',
+    '__tests__/__fixtures__/resultFlatJson.txt',
+  ],
+  [
+    '__tests__/__fixtures__/beforeNested.json',
+    '__tests__/__fixtures__/afterNested.json',
+    '__tests__/__fixtures__/resultNestedJson.txt',
+  ],
+];
+
 const executeTests = (testData, outputFormat) => {
   it.each(testData)(
     '.genDiff(%s, %s)',
@@ -71,4 +84,8 @@ describe('GenDiff Nested Config Files', () => {
 
 describe('GenDiff Plain Output', () => {
   executeTests(testPlainOutputData, 'plain');
+});
+
+describe('GenDiff JSON Output', () => {
+  executeTests(testJsonOutputData, 'json');
 });

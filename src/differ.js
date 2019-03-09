@@ -42,14 +42,14 @@ const getPropertyAction = (oldObj, newObj, key) => (
   propertyActions.find(({ check }) => check(oldObj, newObj, key))
 );
 
-const differ = (oldConfig, newConfig) => {
+const buildDiffAst = (oldConfig, newConfig) => {
   const keys = _.union(_.keys(oldConfig), _.keys(newConfig));
 
   return keys.map((key) => {
     const { type, process } = getPropertyAction(oldConfig, newConfig, key);
-    const rest = process(oldConfig[key], newConfig[key], differ);
+    const rest = process(oldConfig[key], newConfig[key], buildDiffAst);
     return { name: key, type, ...rest };
   });
 };
 
-export default differ;
+export default buildDiffAst;

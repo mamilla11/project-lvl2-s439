@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import parse from './parser';
-import differ from './differ';
+import buildDiffAst from './differ';
 import render from './renderers/renderer';
 
 const genDiff = (oldConfigFilePath, newConfigFilePath, outputFormat) => {
@@ -18,7 +18,7 @@ const genDiff = (oldConfigFilePath, newConfigFilePath, outputFormat) => {
   const oldConfig = parse(oldFileExt, oldFileContent);
   const newConfig = parse(newFileExt, newFileContent);
 
-  const diff = differ(oldConfig, newConfig);
+  const diff = buildDiffAst(oldConfig, newConfig);
   return render(diff, outputFormat);
 };
 

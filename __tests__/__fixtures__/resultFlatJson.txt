@@ -1,0 +1,32 @@
+{
+  "host": {
+    "type": "unchanged",
+    "oldValue": "hexlet.io",
+    "newValue": "hexlet.io",
+    "children": null
+  },
+  "timeout": {
+    "type": "changed",
+    "oldValue": 50,
+    "newValue": 20,
+    "children": null
+  },
+  "proxy": {
+    "type": "deleted",
+    "oldValue": "123.234.53.22",
+    "newValue": null,
+    "children": null
+  },
+  "follow": {
+    "type": "deleted",
+    "oldValue": false,
+    "newValue": null,
+    "children": null
+  },
+  "verbose": {
+    "type": "added",
+    "oldValue": null,
+    "newValue": true,
+    "children": null
+  }
+}
