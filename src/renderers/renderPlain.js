@@ -15,16 +15,15 @@ const buildPropertyName = (entryName, ancestors) => (
 );
 
 const buildPropertyStatus = (entry) => {
-  if (entry.type === 'deleted') {
-    return 'was removed';
+  switch (entry.type) {
+    case 'deleted':
+      return 'was removed';
+    case 'added':
+      return `was added with value: ${valueToString(entry.newValue)}`;
+    case 'changed':
+      return `was updated. From ${valueToString(entry.oldValue)} to ${valueToString(entry.newValue)}`;
+    default: return '';
   }
-  if (entry.type === 'added') {
-    return `was added with value: ${valueToString(entry.newValue)}`;
-  }
-  if (entry.type === 'changed') {
-    return `was updated. From ${valueToString(entry.oldValue)} to ${valueToString(entry.newValue)}`;
-  }
-  return '';
 };
 
 const stringify = (entry, ancestors) => {
@@ -36,7 +35,7 @@ const stringify = (entry, ancestors) => {
 const renderPlain = (diff, ancestors) => (
   diff.filter(entry => entry.type !== 'unchanged')
     .map((entry) => {
-      if (entry.type === 'nested') {
+      if (entry.children) {
         return renderPlain(entry.children, [...ancestors, entry.name]);
       }
       return stringify(entry, ancestors);
