@@ -1,4 +1,4 @@
-import renderDefault from './renderDefault';
+import renderDiff from './renderDiff';
 import renderPlain from './renderPlain';
 import renderJson from './renderJson';
 
@@ -9,6 +9,6 @@ export default (diff, outputFormat) => {
     case 'json':
       return renderJson(diff);
     default:
-      return renderDefault(diff);
+      return renderDiff(diff);
   }
 };
